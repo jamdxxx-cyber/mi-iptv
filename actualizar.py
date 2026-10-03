@@ -315,7 +315,7 @@ for i, linea in enumerate(lineas):
     nombre_canal = linea.split(",", 1)[-1].strip()
 
     if es_deportivo(nombre_canal):
-    nuevo_grupo = "⚽ Deportes"
+        nuevo_grupo = "⚽ Deportes"
 
     linea_nueva = re.sub(
         r'group-title="[^"]*"',
