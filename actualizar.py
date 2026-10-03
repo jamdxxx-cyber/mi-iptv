@@ -206,6 +206,31 @@ MAPEO = {
     "District of Columbia": "United States"
 }
 
+PAISES_PERMITIDOS = {
+    "Brazil",
+    "Venezuela",
+    "Colombia",
+    "Argentina",
+    "Chile",
+    "Peru",
+    "Mexico",
+    "Ecuador",
+    "Bolivia",
+    "Paraguay",
+    "Uruguay",
+    "Costa Rica",
+    "Panama",
+    "Guatemala",
+    "Honduras",
+    "El Salvador",
+    "Nicaragua",
+    "Dominican Republic",
+    "Puerto Rico",
+    "Cuba",
+    "Spain",
+    "Russia",
+}
+
 print("Descargando lista original...")
 
 with urllib.request.urlopen(ORIGEN) as respuesta:
@@ -226,6 +251,9 @@ for i, linea in enumerate(lineas):
 
     grupo_original = match.group(1)
     nuevo_grupo = MAPEO.get(grupo_original, grupo_original)
+
+    if nuevo_grupo not in PAISES_PERMITIDOS:
+        continue
 
     linea_nueva = re.sub(
         r'group-title="[^"]*"',
