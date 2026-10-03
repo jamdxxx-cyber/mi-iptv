@@ -231,6 +231,63 @@ PAISES_PERMITIDOS = {
     "Russia",
 }
 
+PATRONES_DEPORTIVOS = [
+    "espn",
+    "fox sports",
+    "tnt sports",
+    "tyc sports",
+    "dsports",
+    "directv sports",
+    "win sports",
+    "win+ futbol",
+    "tigo sports",
+    "goltv",
+    "gol tv",
+    "sportv",
+    "bandsports",
+    "teledeporte",
+    "claro sports",
+    "aym sports",
+    "azteca deportes",
+    "itv deportes",
+    "px sports",
+    "n sports",
+    "as3 sport",
+    "setanta sports",
+    "trace sport",
+    "viju+ sport",
+    "okko sport",
+    "okko prajm sport",
+    "okko futbol",
+    "sportivnyy",
+    "astrahan.ru sport",
+    "mma-tv",
+    "hard knocks fighting championship",
+    "tna wrestling",
+    "red bull tv",
+]
+
+EXCLUSIONES_DEPORTES = [
+    "cine premiere",
+    "paris premiere",
+    "viju+ premiere",
+]
+
+def es_deportivo(nombre):
+    nombre_limpio = nombre.lower()
+
+    nombre_limpio = re.sub(r'\([^)]*\)', '', nombre_limpio)
+    nombre_limpio = re.sub(r'\[[^\]]*\]', '', nombre_limpio)
+    nombre_limpio = nombre_limpio.strip()
+
+    if any(exclusion in nombre_limpio for exclusion in EXCLUSIONES_DEPORTES):
+        return False
+
+    return any(
+        patron in nombre_limpio
+        for patron in PATRONES_DEPORTIVOS
+    )
+
 print("Descargando lista original...")
 
 with urllib.request.urlopen(ORIGEN) as respuesta:
@@ -254,6 +311,11 @@ for i, linea in enumerate(lineas):
 
     if nuevo_grupo not in PAISES_PERMITIDOS:
         continue
+
+    nombre_canal = linea.split(",", 1)[-1].strip()
+
+    if es_deportivo(nombre_canal):
+    nuevo_grupo = "⚽ Deportes"
 
     linea_nueva = re.sub(
         r'group-title="[^"]*"',
